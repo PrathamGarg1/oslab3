@@ -1,41 +1,43 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
-void bubble_sort(int arr[], int n) {
-    for (int i = 0; i < n-1; i++) {
-        for (int j = 0; j < n-i-1; j++) {
-            if (arr[j] > arr[j+1]) {
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-            }
-        }
-    }
+#define MAX_INTS 1000
+
+static int cmp_int(const void *a, const void *b) {
+    int ia = *(const int *)a; // tyoecast then derefernce
+    int ib = *(const int *)b;
+    if (ia < ib) return -1;
+    if (ia > ib) return 1;
+    return 0;
 }
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        printf("Usage: %s <filename>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         return 1;
     }
 
-    FILE *f = fopen(argv[1], "r");
-    if (!f) {
-        perror("Error opening file");
+    const char *filename = argv[1];
+    FILE *fp = fopen(filename, "r");
+    if (!fp) {
+        perror("fopen");
         return 1;
     }
 
-    int arr[1000], n = 0;
-    while (fscanf(f, "%d", &arr[n]) == 1) n++;
-    fclose(f);
+    int arr[MAX_INTS];
+    int n = 0;
+    while (n < MAX_INTS && fscanf(fp, "%d", &arr[n]) == 1) {
+        n++;
+    }
+    fclose(fp);
 
-    bubble_sort(arr, n);
+    qsort(arr, n, sizeof(int), cmp_int);
 
     for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+        if (i) putchar(' ');
+        printf("%d", arr[i]);
     }
-    printf("\n");
+    putchar('\n');
 
     return 0;
 }

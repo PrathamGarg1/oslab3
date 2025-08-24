@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,5 +7,6 @@ int main(int argc, char *argv[]) {
     int b = atoi(argv[2]);
     char op = argv[3][0];
     int result = (op == '+') ? a + b : a - b;
-    exit(result);
+    exit(result); // the result is returned as the exit code
+    
 }

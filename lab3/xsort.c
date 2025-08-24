@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
 
     pid_t pid = fork();
     if (pid == 0) {
+        // execlp -> searches PATH for xterm and then replaces this child with it
         execlp("xterm", "xterm", "-e", "./sort1", argv[1], NULL);
         perror("execlp failed");
         exit(1);
